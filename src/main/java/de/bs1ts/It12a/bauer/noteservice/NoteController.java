@@ -10,15 +10,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v3/notes")
 public class NoteController {
 
-@GetMapping
-
-Note[] getAll() {
-    Note[] data = {
-            new Note("HTTP lernen"),
-            new Note("Rest-Prinzipien lernen"),
-            new Note("Zimmer aufräumen"),
-            new Note("Staub saugen")
+    private Note[] data = {
+            new Note("HTTP lernen", 0),
+            new Note("Rest-Prinzipien lernen",1),
+            new Note("Zimmer aufräumen",2),
+            new Note("Staub saugen",3),
+            new Note("Langweilen",4),
+            new Note("Hausaufgaben erledigen", 5)
     };
-    return  data;
-}
+
+    @GetMapping
+    Note[] getAll() {
+        return this.data;
+    }
+
+    @GetMapping("/{id}")
+    public Note getOne(@PathVariable int id) {
+        if ((id < this.data.length) && (this.data[id] != null)) {
+            return this.data[id];
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }
